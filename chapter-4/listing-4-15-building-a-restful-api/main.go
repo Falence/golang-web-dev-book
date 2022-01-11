@@ -89,3 +89,18 @@ func PutNoteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusNoContent)
 }
+
+// HTTP Delete - /api/noted/{id}
+func DeleteNoteHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	k := vars["id"]
+	
+	// Remove from Store
+	if _, ok := noteStore[k]; ok {
+		// delete existing item
+		delete(noteStore, k)
+	} else {
+		log.Printf("Could not find key of Note %s to delete", k)
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
