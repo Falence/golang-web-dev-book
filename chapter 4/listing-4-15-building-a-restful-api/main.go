@@ -37,12 +37,30 @@ func PostNoteHandler(w http.ResponseWriter, r *http.Request) {
 	k := strconv.Itoa(id)
 	noteStore[k] = note
 
-	// HTTP response
+	// Send response
 	j, err := json.Marshal(note)
 	if err != nil {
 		panic(err)
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+	w.Write(j)
+}
+
+// HTTP Get - /api/notes
+func GetNoteHandler(w http.ResponseWriter, r *http.Request) {
+	// Get all notes
+	var notes []Note
+	for _, v := range noteStore {
+		notes = append(notes, v)
+	}
+
+	// Send response
+	j, err := json.Marshal(notes)
+	if err != nil {
+		panic(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	w.Write(j)
 }
