@@ -11,9 +11,9 @@ import (
 )
 
 type Note struct {
-	Title string `json:"title"`
-	Description string `json:"description"` 
-	CreatedOn time.Time `json:"createdon"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	CreatedOn   time.Time `json:"createdon"`
 }
 
 // Store for the Notes collection
