@@ -94,7 +94,7 @@ func PutNoteHandler(w http.ResponseWriter, r *http.Request) {
 func DeleteNoteHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	k := vars["id"]
-	
+
 	// Remove from Store
 	if _, ok := noteStore[k]; ok {
 		// delete existing item
@@ -103,4 +103,20 @@ func DeleteNoteHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Could not find key of Note %s to delete", k)
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// Entry point to the program
+func main() {
+	r := mux.NewRouter().StrictSlash(false)
+	r.HandleFunc("/api/notes", GetNoteHandler).Methods("GET")
+	r.HandleFunc("/api/notes", PostNoteHandler).Methods("POST")
+	r.HandleFunc("/api/notes/{id}", PutNoteHandler).Methods("PUT")
+	r.HandleFunc("/api/notes/{id}", DeleteNoteHandler).Methods("DELETE")
+
+	server := &http.Server{
+		Addr: ":8080",
+		Handler: r,
+	}
+	log.Println("Listening...")
+	server.ListenAndServe()
 }
