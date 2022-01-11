@@ -64,3 +64,28 @@ func GetNoteHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(j)
 }
+
+// HTTP Put - /api/notes/{id}
+func PutNoteHandler(w http.ResponseWriter, r *http.Request) {
+	var err error
+	vars := mux.Vars(r)
+	k := vars["id"]
+	var noteToUpd Note
+
+	// Decode the incoming Note json
+	err = json.NewDecoder(r.Body).Decode(&noteToUpd)
+	if err != nil {
+		panic(err)
+	}
+
+	// Check if note exists
+	if note, ok := noteStore[k]; ok {
+		noteToUpd.CreatedOn = note.CreatedOn
+		// Delete existing item and add the updated item
+		delete(noteStore, k)
+		noteStore[k] = noteToUpd
+	} else {
+		log.Printf("Could not find key of Note %s to delete", k)
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
