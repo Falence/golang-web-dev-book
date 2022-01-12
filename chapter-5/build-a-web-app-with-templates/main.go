@@ -22,6 +22,19 @@ var noteStore = make(map[string]Note)
 // Variable to generate keys for the collection
 var id int = 0
 
+
+var templates map[string]*template.Template
+// Compile view templates
+func init() {
+	if templates == nil {
+		templates = make(map[string]*template.Template)
+	}
+	templates["index"] = template.Must(template.ParseFiles("templates/index.html", "templates/base.html"))
+	templates["add"] = template.Must(template.ParseFiles("templates/add.html", "templates/base.html"))
+	templates["edit"] = template.Must(template.ParseFiles("templates/edit.html", "templates/base.html"))
+}
+
+
 func main() {
 	r := mux.NewRouter().StrictSlash(false)
 	fs := http.FileServer(http.Dir("public")) // creates a handler for rendering files from the public path
