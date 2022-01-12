@@ -5,8 +5,11 @@
 {{define "body"}}
   <form action="/notes/update/{{.Id}}" method="post">
     <p>Title:<br> <input type="text" value="{{.Note.Title}}" name="title"></p>
-    <p>Description:<br> <textarea rows="4" cols="50" name="description">
-      {{.Note.Description}}</textarea> </p>
+    <p>Description:<br>
+      <textarea rows="4" cols="50" name="description">
+        {{.Note.Description}}
+      </textarea>
+    </p>
     <p><input type="submit" value="submit"/></p>
   </form>
 {{end}}
