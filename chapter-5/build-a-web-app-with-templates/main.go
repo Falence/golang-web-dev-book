@@ -21,3 +21,24 @@ var noteStore = make(map[string]Note)
 
 // Variable to generate keys for the collection
 var id int = 0
+
+func main() {
+	r := mux.NewRouter().StrictSlash(false)
+	fs := http.FileServer(http.Dir("public")) // creates a handler for rendering files from the public path
+	
+	r.Handle("/public/", fs)
+	r.HandleFunc("/", getNotes)
+	r.HandleFunc("/notes/add", addNote)
+	r.HandleFunc("/notes/save", saveNote)
+	r.HandleFunc("/notes/edit/{id}", editNote)
+	r.HandleFunc("/notes/update/{id}", updateNote)
+	r.HandleFunc("/notes/delete/{id}", deleteNote)
+
+	server := &http.Server{
+		Addr: ":8080",
+		Handler: r,
+	}
+	log.Println("Listening...")
+	server.ListenAndServe()
+
+}
