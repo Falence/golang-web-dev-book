@@ -52,6 +52,10 @@ func getNotes(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "index", "base", noteStore)
 }
 
+func addNote(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "add", "base", nil)
+}
+
 
 func main() {
 	r := mux.NewRouter().StrictSlash(false)
