@@ -47,6 +47,11 @@ func renderTemplate(w http.ResponseWriter, name string, template string, viewMod
 	}
 }
 
+// HANDLERS
+func getNotes(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "index", "base", noteStore)
+}
+
 
 func main() {
 	r := mux.NewRouter().StrictSlash(false)
