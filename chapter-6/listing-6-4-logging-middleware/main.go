@@ -16,3 +16,31 @@ func loggingHandler(next http.Handler) http.Handler {
 	})
 }
 
+func index(w http.ResponseWriter, r *http.Request) {
+	log.Println("Executing index handler")
+	fmt.Fprintf(w, "Welcome")
+}
+
+func about(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Executing about handler")
+	fmt.Fprintf(w, "Go Middleware")
+}
+
+func iconHandler( w http.ResponseWriter, r *http.Request) {
+
+}
+
+func main() {
+	indexHandler := http.HandlerFunc(index)
+	aboutHandler := http.HandlerFunc(about)
+	
+	http.HandlerFunc("/favicon.ico", iconHandler)
+	http.Handle("/", loggingHandler(indexHandler))
+	http.Handle("/about", loggingHandler(aboutHandler))
+
+	server := &http.Server{
+		Addr: ":8080",
+	}
+	log.Println("Listening...")
+	server.ListenAndServe()
+}
