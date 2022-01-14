@@ -26,15 +26,14 @@ func about(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Go Middleware")
 }
 
-func iconHandler( w http.ResponseWriter, r *http.Request) {
-
-}
+// func iconHandler(w http.ResponseWriter, r *http.Request) {
+// }
 
 func main() {
 	indexHandler := http.HandlerFunc(index)
 	aboutHandler := http.HandlerFunc(about)
 	
-	http.HandlerFunc("/favicon.ico", iconHandler)
+	// http.HandlerFunc("/favicon.ico", iconHandler)
 	http.Handle("/", loggingHandler(indexHandler))
 	http.Handle("/about", loggingHandler(aboutHandler))
 
