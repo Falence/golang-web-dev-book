@@ -46,7 +46,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/message", message)
-	n := negroni.Classic()
+
+	n := negroni.Classic()	// creating a negroni instance
 	n.Use(negroni.HandlerFunc(middlewareFirst))
 	n.Use(negroni.HandlerFunc(middlewareSecond))
 	n.UseHandler(mux)
