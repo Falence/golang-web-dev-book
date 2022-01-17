@@ -29,3 +29,20 @@ type User struct {
 	UserName string `json:"username"`
 	Password string `json:"password"`
 }
+
+// Read the key files before starting http handlers
+func init() {
+	var err error
+
+	signKey, err = ioutil.ReadFile(privateKeyPath)
+	if err != nil {
+		log.Fatal("Error reading private key")
+		return
+	}
+
+	verifyKey, err = ioutil.ReadFile(publicKeyPath)
+	if err != nil {
+		log.Fatal("Error reading private key")
+		return
+	}
+}
