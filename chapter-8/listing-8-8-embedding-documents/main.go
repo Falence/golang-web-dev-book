@@ -50,17 +50,29 @@ func main() {
 	// }
 
 	// Retrieving all records
-	iter := c.Find(nil).Sort("name").Iter()
-	result := Category{}
-	for iter.Next(&result) {
-		fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
-		tasks := result.Tasks
-		for _, v := range tasks {
-			fmt.Printf("Task:%s Due:%v\n", v.Description, v.Due)
-		}
-	}
+	// iter := c.Find(nil).Sort("name").Iter()
+	// result := Category{}
+	// for iter.Next(&result) {
+	// 	fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
+	// 	tasks := result.Tasks
+	// 	for _, v := range tasks {
+	// 		fmt.Printf("Task:%s Due:%v\n", v.Description, v.Due)
+	// 	}
+	// }
 
-	if err = iter.Close(); err != nil {
+	// if err = iter.Close(); err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// Retrieving a single record from a collection
+	result := Category{}
+	err = c.Find(bson.M{"name": "Open Source"}).One(&result)
+	if err != nil {
 		log.Fatal(err)
+	}
+	fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
+	tasks := result.Tasks
+	for _, v := range tasks {
+		fmt.Printf("Tasks:%s Due:%s", v.Description, v.Due)
 	}
 }
