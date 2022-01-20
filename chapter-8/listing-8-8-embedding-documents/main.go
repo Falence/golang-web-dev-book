@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	// "fmt"
+	// "log"
 	"time"
 
 	"gopkg.in/mgo.v2"
@@ -32,6 +32,7 @@ func main() {
 	// Get collection
 	c := session.DB("taskdb").C("categories")
 
+	// 1 ==================================
 	// Embedding child collection
 	// doc := Category{
 	// 	bson.NewObjectId(),
@@ -49,6 +50,7 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 
+	// 2 ============================================
 	// Retrieving all records
 	// iter := c.Find(nil).Sort("name").Iter()
 	// result := Category{}
@@ -64,15 +66,32 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 
+	// 3 ================================================
 	// Retrieving a single record from a collection
-	result := Category{}
-	err = c.Find(bson.M{"name": "Open Source"}).One(&result)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
-	tasks := result.Tasks
-	for _, v := range tasks {
-		fmt.Printf("Tasks:%s Due:%s", v.Description, v.Due)
-	}
+	// result := Category{}
+	// err = c.Find(bson.M{"name": "Open Source"}).One(&result)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
+	// tasks := result.Tasks
+	// for _, v := range tasks {
+	// 	fmt.Printf("Tasks:%s Due:%s", v.Description, v.Due)
+	// }
+
+	// 4 =================================================
+	// Updating a document
+	id := "61e9b755fc51a88dd58e6d58"
+	err = c.Update(bson.M{"_id": id},
+	bson.M{"$set": bson.M{
+		"description": "Create open-source projects",
+		"tasks": []Task{
+			{"Evaluate Negroni Project", time.Date(2015, time.August, 15, 0, 0, 0, 
+				0, time.UTC)},
+			{"Explore mgo Project", time.Date(2015, time.August, 10, 0, 0, 0, 0, 
+				time.UTC)},
+			{"Explore Gorilla Toolkit", time.Date(2015, time.August, 10, 0, 0, 0, 0, 
+				time.UTC)},
+		},
+	}})
 }
