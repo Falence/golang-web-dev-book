@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -32,19 +33,34 @@ func main() {
 	c := session.DB("taskdb").C("categories")
 
 	// Embedding child collection
-	doc := Category{
-		bson.NewObjectId(),
-		"Open Source",
-		"Tasks for open source projects",
-		[]Task{
-			{"Create project in mgo", time.Date(2015, time.August, 10, 0, 0, 0, 0, time.UTC)},
-			{"Create REST API", time.Date(2015, time.August, 20, 0, 0, 0, 0, time.UTC)},
-		},
-	}
+	// doc := Category{
+	// 	bson.NewObjectId(),
+	// 	"Open Source",
+	// 	"Tasks for open source projects",
+	// 	[]Task{
+	// 		{"Create project in mgo", time.Date(2015, time.August, 10, 0, 0, 0, 0, time.UTC)},
+	// 		{"Create REST API", time.Date(2015, time.August, 20, 0, 0, 0, 0, time.UTC)},
+	// 	},
+	// }
 
 	// Insert a category object with embedded tasks
-	err = c.Insert(&doc)
-	if err != nil {
+	// err = c.Insert(&doc)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// Retrieving all records
+	iter := c.Find(nil).Iter()
+	result := Category{}
+	for iter.Next(&result) {
+		fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
+		tasks := result.Tasks
+		for _, v := range tasks {
+			fmt.Printf("Task:%s Due:%v\n", v.Description, v.Due)
+		}
+	}
+
+	if err = iter.Close(); err != nil {
 		log.Fatal(err)
 	}
 }
