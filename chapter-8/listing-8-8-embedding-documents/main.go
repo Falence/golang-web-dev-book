@@ -81,17 +81,22 @@ func main() {
 
 	// 4 =================================================
 	// Updating a document
+	// id := "61e9b755fc51a88dd58e6d58"
+	// err = c.Update(bson.M{"_id": id},
+	// bson.M{"$set": bson.M{
+	// 	"description": "Create open-source projects",
+	// 	"tasks": []Task{
+	// 		{"Evaluate Negroni Project", time.Date(2015, time.August, 15, 0, 0, 0, 
+	// 			0, time.UTC)},
+	// 		{"Explore mgo Project", time.Date(2015, time.August, 10, 0, 0, 0, 0, 
+	// 			time.UTC)},
+	// 		{"Explore Gorilla Toolkit", time.Date(2015, time.August, 10, 0, 0, 0, 0, 
+	// 			time.UTC)},
+	// 	},
+	// }})
+
+	// 5 ========================================
+	// Deleting/removing a record
 	id := "61e9b755fc51a88dd58e6d58"
-	err = c.Update(bson.M{"_id": id},
-	bson.M{"$set": bson.M{
-		"description": "Create open-source projects",
-		"tasks": []Task{
-			{"Evaluate Negroni Project", time.Date(2015, time.August, 15, 0, 0, 0, 
-				0, time.UTC)},
-			{"Explore mgo Project", time.Date(2015, time.August, 10, 0, 0, 0, 0, 
-				time.UTC)},
-			{"Explore Gorilla Toolkit", time.Date(2015, time.August, 10, 0, 0, 0, 0, 
-				time.UTC)},
-		},
-	}})
+	err = c.Remove(bson.M{"_id": id})
 }
