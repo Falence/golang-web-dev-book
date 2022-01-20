@@ -7,4 +7,5 @@ require (
 	github.com/gorilla/mux v1.6.2
 	github.com/gorilla/pat v1.0.1
 	github.com/markbates/goth v1.68.0
+	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )

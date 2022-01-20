@@ -67,17 +67,25 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create a signer for rsa 256
-	t := jwt.New(jwt.GetSigningMethod("RS256"))
+	t := jwt.NewWithClaims(jwt.GetSigningMethod("RS256"), jwt.MapClaims{
+		"iss": "admin",
+		"CustomUserInfo": struct {
+			Name string
+			Role string
+		}{user.UserName, "Member"},
+		"exp": time.Now().Add(time.Minute * 20).Unix(),
+	})
 
-	// Set our claims
-	t.Claims["iss"] = "admin"
-	t.Claims["CustomUserInfo"] = struct {
-		Name string
-		Role string
-	}{user.UserName, "Member"}
+	// // Set our claims
+	// t.Claims["iss"] = "admin"
+	// t.Claims["CustomUserInfo"] = struct {
+	// 	Name string
+	// 	Role string
+	// }{user.UserName, "Member"}
 
-	// Set the expiration time
-	t.Claims["exp"] = time.Now().Add(time.Minute * 20).Unix()
+	// // Set the expiration time
+	// t.Claims["exp"] = time.Now().Add(time.Minute * 20).Unix()
+
 	tokenString, err := t.SignedString(signKey)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -90,3 +98,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	response := Token{tokenString}
 	jsonResponse(response, w)
 } 
+
+// Only accessible with valid token
+func authHandler(w http.ResponseWriter, r *http.Request) {
+	// validate the token
+	token, err := jwt.Parse
+}
