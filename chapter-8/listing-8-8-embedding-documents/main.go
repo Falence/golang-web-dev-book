@@ -50,7 +50,7 @@ func main() {
 	// }
 
 	// Retrieving all records
-	iter := c.Find(nil).Iter()
+	iter := c.Find(nil).Sort("name").Iter()
 	result := Category{}
 	for iter.Next(&result) {
 		fmt.Printf("Category:%s, Description:%s\n", result.Name, result.Description)
