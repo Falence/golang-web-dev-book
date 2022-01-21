@@ -88,3 +88,21 @@ func GetCategories(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(j)
 }
+
+func main() {
+	var err error
+	session, err = mgo.Dial("localhost")
+	if err != nil {
+		panic(err)
+	}
+	r := mux.NewRouter()
+	r.HandleFunc("/api/categories", GetCategories).Methods("GET")
+	r.HandleFunc("/api/categories", PostCategory).Methods("POST")
+
+	server := &http.Server{
+		Addr: ":8080",
+		Handler: r,
+	}
+	log.Println("Listening...")
+	server.ListenAndServe()
+}
