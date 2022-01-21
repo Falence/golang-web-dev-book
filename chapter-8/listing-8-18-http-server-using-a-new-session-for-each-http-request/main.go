@@ -41,3 +41,28 @@ func NewDataStore() *DataStore {
 	}
 	return ds
 }
+
+
+// HANDLERS
+// Insert a record
+func PostCategory(w http.ResponseWriter, r *http.Request) {
+	var category Category
+	// Decode incoming Category json
+	err := json.NewDecoder(r.Body).Decode(&category)
+	if err != nil {
+		panic(err)
+	}
+	
+	ds := NewDataStore()
+	defer ds.Close()
+
+	// Getting the mgo.Collection
+	c := ds.C("categories")
+
+	// Insert record
+	err = c.Insert(&category)
+	if err != nil {
+		panic(err)
+	}
+	w.WriteHeader(http.StatusCreated)
+}
