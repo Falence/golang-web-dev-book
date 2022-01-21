@@ -52,7 +52,7 @@ func PostCategory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	ds := NewDataStore()
 	defer ds.Close()
 
@@ -65,4 +65,26 @@ func PostCategory(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	w.WriteHeader(http.StatusCreated)
+}
+
+// Read all records
+func GetCategories(w http.ResponseWriter, r *http.Request) {
+	var categories []Category
+	ds := NewDataStore()
+	defer ds.Close()
+
+	// Getting the mgo.Collection
+	c := ds.C("categories")
+	iter := c.Find(nil).Iter()
+	result := Category{}
+	for iter.Next(&result) {
+		categories = append(categories, result)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	j, err := json.Marshal(categories)
+	if err != nil {
+		panic(err)
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
 }
