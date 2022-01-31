@@ -1,9 +1,11 @@
-package stringutils
+package stringutils_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
+
+	. "web-dev-with-golang-book-by-shiju/chapter-10/listing-10-1/stringutils"
 )
 
 // Test case for the SwapCase function
