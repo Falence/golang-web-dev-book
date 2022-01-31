@@ -16,7 +16,7 @@ func TestSwapCase(t *testing.T) {
 
 // Test case for the Reverse function
 func TestReverse(t *testing.T) {
-	input, expected := "Hello, World", "dlroW olleH"
+	input, expected := "Hello, World", "dlroW ,olleH"
 	result := Reverse(input)
 
 	if result != expected {
