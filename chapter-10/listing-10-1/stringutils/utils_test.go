@@ -44,3 +44,9 @@ func ExampleReverse() {
 	fmt.Println(Reverse("Hello, world"))
 	// Output: dlroW ,olleH
 }
+
+// Example code for SwapCase function
+func ExampleSwapCase() {
+	fmt.Println(SwapCase("Hello, World"))
+	// Output: hELLO, wORLD
+}
