@@ -3,6 +3,7 @@ package stringutils
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 // Test case for the SwapCase function
@@ -41,7 +42,7 @@ func BenchmarkReverse(b *testing.B) {
 
 // Example code for Reverse function
 func ExampleReverse() {
-	fmt.Println(Reverse("Hello, world"))
+	fmt.Println(Reverse("Hello, World"))
 	// Output: dlroW ,olleH
 }
 
@@ -49,4 +50,14 @@ func ExampleReverse() {
 func ExampleSwapCase() {
 	fmt.Println(SwapCase("Hello, World"))
 	// Output: hELLO, wORLD
+}
+
+// Illustrating how to skip a test case
+func TestLongRun(t *testing.T) {
+	// Checks whether the short flag is provided
+	if testing.Short() {
+		t.Skip("Skipping test in short mode")
+	}
+	// Long running implementation goes here
+	time.Sleep(5 * time.Second)
 }
