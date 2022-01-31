@@ -23,3 +23,11 @@ func TestReverse(t *testing.T) {
 		t.Errorf("Reverse(%q) == %q, expected %q", input, result, expected)
 	}
 }
+
+// Benchmark for SwapCase function
+func BenchmarkSwapCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SwapCase("Hello, World")
+	}
+}
+
