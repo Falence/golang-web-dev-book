@@ -63,7 +63,7 @@ func TestLongRun(t *testing.T) {
 }
 
 // Test case for the SwapCase function to execute in parallel
-func TestSwapCaseInParallel(t testing.T) {
+func TestSwapCaseInParallel(t *testing.T) {
 	t.Parallel()
 	// Delaying 1 second for the sake of demonstration
 	time.Sleep(1 * time.Second)
@@ -76,14 +76,14 @@ func TestSwapCaseInParallel(t testing.T) {
 }
 
 // Test case for the Reverse function to execute in parallel
-func TestReverseInParallel(t testing.T) {
+func TestReverseInParallel(t *testing.T) {
 	t.Parallel()
 	// Delaying 2 second for the sake of demonstration
 	time.Sleep(2 * time.Second)
-	input, expected := "Hello, World", "dlorW ,olleH"
+	input, expected := "Hello, World", "dlroW ,olleH"
 	result := Reverse(input)
 
 	if result != expected {
-		t.Errorf("SwapCase(%q) == %q, expected %q", input, result, expected)
+		t.Errorf("Reverse(%q) == %q, expected %q", input, result, expected)
 	}
 }
