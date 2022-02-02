@@ -16,7 +16,7 @@ type User struct {
 
 var userStore = []User{}
 
-func getUser(w http.ResponseWriter, r *http.Request) {
+func getUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := json.Marshal(userStore)
 
 	if err != nil {
@@ -60,7 +60,7 @@ func validate(user User) error {
 func SetUserRoutes() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/users", createUser).Methods("POST")
-	r.HandleFunc("/users", getUser).Methods("GET")
+	r.HandleFunc("/users", getUsers).Methods("GET")
 	return r
 }
 
