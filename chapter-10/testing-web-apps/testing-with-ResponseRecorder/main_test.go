@@ -66,6 +66,52 @@ func TestUniqueEmail(t *testing.T) {
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	if w.Code != 400 {
-		t.Error("Bad Request expected, got: %d", w.Code)
+		t.Errorf("Bad Request expected, got: %d", w.Code)
+	}
+}
+
+func TestGetUsersClient(t *testing.T) {
+	r := mux.NewRouter()
+	r.HandleFunc("/users", getUsers).Methods("GET")
+	server := httptest.NewServer(r)
+	defer server.Close()
+
+	usersUrl := fmt.Sprintf("%s/users", server.URL)
+	request, err := http.NewRequest("GET", usersUrl, nil)
+
+	res, err := http.DefaultClient.Do(request)	// sends request to the created server
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if res.StatusCode != 200 {
+		t.Errorf("HTTP status expected: 200, got: %d", res.StatusCode)
+	}
+}
+
+func TestCreateUserClient(t *testing.T) {
+	r := mux.NewRouter()
+	r.HandleFunc("/users", createUser).Methods("POST")
+	server := httptest.NewServer(r)
+	defer server.Close()
+
+	usersUrl := fmt.Sprintf("%s/users", server.URL)
+	fmt.Println(usersUrl)
+	userJson := `{"firstname": "precoius", "lastname": "zemoh", "email": "precious@zemoh.com"}`
+	request, err := http.NewRequest(
+		"POST",
+		usersUrl,
+		strings.NewReader(userJson),
+	)
+
+	res, err := http.DefaultClient.Do(request)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if res.StatusCode != 201 {
+		t.Errorf("HTTP status expected: 201, got: %d", res.StatusCode)
 	}
 }
