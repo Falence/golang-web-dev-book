@@ -51,9 +51,19 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 func validate(user User) error {
 	for _, u := range userStore {
 		if u.Email == user.Email {
-			return errors.New("The Email already exists!")
+			return errors.New("the email already exists")
 		}
 	}
 	return nil
 }
 
+func SetUserRoutes() *mux.Router {
+	r := mux.NewRouter()
+	r.HandleFunc("/users", createUser).Methods("POST")
+	r.HandleFunc("/users", getUser).Methods("GET")
+	return r
+}
+
+func main() {
+	http.ListenAndServe(":8080", SetUserRoutes())
+}
