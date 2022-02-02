@@ -47,3 +47,25 @@ func TestCreateUser(t *testing.T) {
 		t.Errorf("HTTP status expected: 201, got: %d", w.Code)
 	}
 }
+
+// User Story - The email id of a User entity should be unique
+func TestUniqueEmail(t *testing.T) {
+	r := mux.NewRouter()
+	r.HandleFunc("/users", createUser).Methods("POST")
+
+	userJson := `{"firstname": "Falence", "lastname": "Lemungoh", "email": "falence@lemu.com"}`
+	req, err := http.NewRequest(
+		"POST",
+		"/users",
+		strings.NewReader(userJson),
+	)
+	if err != nil {
+		t.Error(err)
+	}
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	if w.Code != 400 {
+		t.Error("Bad Request expected, got: %d", w.Code)
+	}
+}
