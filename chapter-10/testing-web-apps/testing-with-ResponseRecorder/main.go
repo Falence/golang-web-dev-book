@@ -46,3 +46,14 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	userStore = append(userStore, user)
 	w.WriteHeader(http.StatusCreated)
 }
+
+// Validate User entity
+func validate(user User) error {
+	for _, u := range userStore {
+		if u.Email == user.Email {
+			return errors.New("The Email already exists!")
+		}
+	}
+	return nil
+}
+
