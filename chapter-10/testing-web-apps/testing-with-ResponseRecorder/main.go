@@ -15,3 +15,15 @@ type User struct {
 }
 
 var userStore = []User{}
+
+func getUser(w http.ResponseWriter, r *http.Request) {
+	users, err := json.Marshal(userStore)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(users)
+}
