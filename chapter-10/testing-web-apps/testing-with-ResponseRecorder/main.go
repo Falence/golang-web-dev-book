@@ -27,3 +27,22 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(users)
 }
+
+func createUser(w http.ResponseWriter, r *http.Request) {
+	var user User
+	// Decode the incoming User json
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	// Validate the User entity
+	err = validate(user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	// Insert User entity into User store
+	userStore = append(userStore, user)
+	w.WriteHeader(http.StatusCreated)
+}
