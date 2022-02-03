@@ -1,11 +1,50 @@
 package lib_test
 
 import (
+	"errors"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"web-dev-with-golang-book-by-shiju/chapter-10/bdd-testing/lib"
+	. "web-dev-with-golang-book-by-shiju/chapter-10/bdd-testing/lib"
 )
+
+type FakeUserRepository struct {
+	DataStore []User
+}
+
+func (repo *FakeUserRepository) GetAll() []User {
+	return repo.DataStore
+}
+
+func (repo *FakeUserRepository) Create(user User) error {
+	err := repo.Validate(user)
+	if err!= nil {
+		return err
+	}
+	repo.DataStore = append(repo.DataStore, user)
+	return nil
+}
+
+func (repo *FakeUserRepository) Validate(user User) error {
+	for _, u := range repo.DataStore {
+		if u.Email == user.Email {
+			return errors.New("the email already exists")
+		}
+	}
+	return nil
+}
+
+func NewFakeUserRepo() *FakeUserRepository {
+	return &FakeUserRepository{
+		DataStore: []User{
+			User{"Falence", "Lemungoh", "falence@lemungoh.com"},
+			User{"Precious", "Zemoh", "precious@zemoh.com"},
+			User{"Fiemina", "Chiafie", "fiemina@chiafie.com"},
+		},
+	}
+}
+
 
 var _ = Describe("Users", func() {
 	BeforeEach(func() {
