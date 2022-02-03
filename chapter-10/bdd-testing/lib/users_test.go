@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 
 	"github.com/gorilla/mux"
 	. "github.com/onsi/ginkgo"
@@ -66,7 +67,7 @@ var _ = Describe("Users", func() {
 				r.Handle("/users", GetUsers(userRepository)).Methods("GET")
 				req, err := http.NewRequest("GET", "/users", nil)
 				Expect(err).NotTo(HaveOccurred())
-				
+
 				w = httptest.NewRecorder()
 				r.ServeHTTP(w, req)
 				Expect(w.Code).To(Equal(200))
@@ -82,8 +83,22 @@ var _ = Describe("Users", func() {
 
 	Describe("Post a new User", func() {
 		Context("Provide valid User data", func() {
-			It("should create a new User and get HTTP status: 201", func() {})
+			It("should create a new User and get HTTP status: 201", func() {
+				r.Handle("/users", CreateUser(userRepository)).Methods("POST")
+				userJson := `{"firstname": "Falence", "lastname": "Lemungoh", "email": "falence@lemungoh.com"}`
+				req, err := http.NewRequest(
+					"POST",
+					"/users",
+					strings.NewReader(userJson),
+				)
+				Expect(err).NotTo(HaveOccurred())
+
+				w = httptest.NewRecorder()
+				r.ServeHTTP(w, req)
+				Expect(w.Code).To(Equal(201))
+			})
 		})
+		
 		Context("Provide User data that contains duplicate email id", func() {
 			It("should get HTTP status: 400", func() {})
 		})
