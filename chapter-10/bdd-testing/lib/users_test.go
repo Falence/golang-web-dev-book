@@ -24,7 +24,7 @@ func (repo *FakeUserRepository) GetAll() []User {
 
 func (repo *FakeUserRepository) Create(user User) error {
 	err := repo.Validate(user)
-	if err!= nil {
+	if err != nil {
 		return err
 	}
 	repo.DataStore = append(repo.DataStore, user)
@@ -50,7 +50,6 @@ func NewFakeUserRepo() *FakeUserRepository {
 	}
 }
 
-
 var _ = Describe("Users", func() {
 	userRepository := NewFakeUserRepo()
 	var r *mux.Router
@@ -71,7 +70,7 @@ var _ = Describe("Users", func() {
 				w = httptest.NewRecorder()
 				r.ServeHTTP(w, req)
 				Expect(w.Code).To(Equal(200))
-				
+
 				var users []User
 				json.Unmarshal(w.Body.Bytes(), &users)
 
@@ -85,7 +84,7 @@ var _ = Describe("Users", func() {
 		Context("Provide valid User data", func() {
 			It("should create a new User and get HTTP status: 201", func() {
 				r.Handle("/users", CreateUser(userRepository)).Methods("POST")
-				userJson := `{"firstname": "Falence", "lastname": "Lemungoh", "email": "falence@lemungoh.com"}`
+				userJson := `{"firstname": "sp", "lastname": "kelly", "email": "sp@kelly.com"}`
 				req, err := http.NewRequest(
 					"POST",
 					"/users",
@@ -98,9 +97,22 @@ var _ = Describe("Users", func() {
 				Expect(w.Code).To(Equal(201))
 			})
 		})
-		
+
 		Context("Provide User data that contains duplicate email id", func() {
-			It("should get HTTP status: 400", func() {})
+			It("should get HTTP status: 400", func() {
+				r.Handle("/users", CreateUser(userRepository)).Methods("POST")
+				userJson := `{"firstname": "sp", "lastname": "kelly", "email": "sp@kelly.com"}`
+				req, err := http.NewRequest(
+					"POST",
+					"/users",
+					strings.NewReader(userJson),
+				)
+				Expect(err).NotTo(HaveOccurred())
+
+				w = httptest.NewRecorder()
+				r.ServeHTTP(w, req)
+				Expect(w.Code).To(Equal(400))
+			})
 		})
 	})
 })
